@@ -9,10 +9,8 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS inventory
                     qty INT NOT NULL)''')
 
 print("Welcome to Inventory-Pi")
-item = tuple(cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", ("045566000309",)))
-print(item)
 
-running = False
+running = True
 while running:
     task_code = input("Please scan a task code... ")
 
@@ -28,7 +26,7 @@ while running:
 
             if input_code_tuple in db:
                 cursor.execute("UPDATE inventory SET qty = qty + 1 WHERE bar_code = ?", input_code_tuple)
-                item = list(cursor.execute("SELECT * FROM inventory WHERE bar_core = ?", input_code_tuple))
+                item = list(cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", input_code_tuple))
                 print(f"{item[0][0]} {item[0][1]} quantity is now {item[0][2]}")
             else:
                 input_name = input("Please enter the name of the product... ").lower().strip().replace(' ', '_'),
@@ -50,14 +48,19 @@ while running:
 
             if input_code_tuple in db:
                 qty = list(cursor.execute("SELECT qty FROM inventory WHERE bar_code = ?", input_code_tuple))
-                if qty > 0:
+                if qty[0][0] > 0:
                     cursor.execute("UPDATE inventory SET qty = qty - 1 WHERE bar_code = ?", input_code_tuple)
-                    item = cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", input_code_tuple)
+                    item = list(cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", input_code_tuple))
                     print(f"Item {item[0][0]} {item[0][1]} quantity is now {item[0][2]}")
                 else:
-                    item = cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", input_code_tuple)
-                    print(f"ERROR. Item {item[0][0]} {item[0][1]} quantity is 0.")
+                    item = list(cursor.execute("SELECT * FROM inventory WHERE bar_code = ?", input_code_tuple))
+                    print(f"Item {item[0][0]} {item[0][1]} quantity is already 0.")
             else:
                 print(f"Item {input_code_tuple[0]} not in inventory.")
 
             connection.commit()
+
+    elif task_code == "exit":
+        break
+    else:
+        print(f"Invalid task code: {task_code}")
