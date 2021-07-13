@@ -24,7 +24,6 @@ def multiple_out():
 
 
 def single_in(input_barcode):
-
     with Session(engine) as session:
         barcodes_in_inventory = session.execute(
             select(Inventory.barcode)
@@ -36,12 +35,8 @@ def single_in(input_barcode):
         else:
             create_new_item(session, input_barcode)
 
-        session.commit()
-        print_update_msg(session, input_barcode)
-
 
 def single_out(input_barcode):
-
     with Session(engine) as session:
         barcodes_in_inventory = session.execute(
             select(Inventory.barcode)
@@ -60,6 +55,8 @@ def increment(session, input_barcode):
         filter_by(barcode=input_barcode)
     ).scalar_one()
     item_to_update.quantity += 1
+    session.commit()
+    print_update_msg(session, input_barcode)
 
 
 def decrement(session, input_barcode):
@@ -91,6 +88,8 @@ def create_new_item(session, input_barcode):
         quantity=1
     )
     session.add(new_item)
+    session.commit()
+    print_update_msg(session, input_barcode)
 
 
 def print_update_msg(session, input_barcode):
