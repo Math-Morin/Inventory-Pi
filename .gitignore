@@ -142,3 +142,4 @@ cython_debug/
 
 # SQLite Databases
 *.db
+*.db-journal
