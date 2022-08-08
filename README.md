@@ -17,6 +17,7 @@ Just a simple project to learn more about
 * Clone the repo locally on your device.
 * Print the bar codes and keep near the scanning device.
 * Run the script and scan the appropriate bar code.
+* Scan your items.
 
 ## TODO
 * Make API calls to barcodelookup.com to simplify most new item addition to DB.
