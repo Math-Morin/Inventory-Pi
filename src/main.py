@@ -11,12 +11,12 @@ while True:
     elif task_code == "single-in":
         print("'single-in' selected")
         input_barcode = input("Please scan an item or the 'done' barcode...")
-        single_in(input_barcode)
+        single_in(input_barcode, 1)
 
     elif task_code == "single-out":
         print("'single-out' selected")
         input_barcode = input("Please scan an item or the 'done' barcode...")
-        single_out(input_barcode)
+        single_out(input_barcode, 1)
 
     elif task_code == "multiple-in":
         print("'multiple-in' selected.")
